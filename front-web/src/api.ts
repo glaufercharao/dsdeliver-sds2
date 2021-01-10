@@ -1,4 +1,5 @@
 import axios from "axios";
+import { OrderPayLoad } from "./Orders/types";
 const API_URL = "http://localhost:8080";
 const mapboxToken = process.env.REACT_APP_ACCESS_TOKEN_MAP_BOX;
 
@@ -8,4 +9,18 @@ export function fetchProducts(){
 
 export function fetchLocalMapBox(local:string){
     return axios(`https://api.mapbox.com/geocoding/v5/mapbox.places/${local}.json?access_token=${mapboxToken}`)
+}
+
+export function formatPrice(price:number){
+    const formatter = new Intl.NumberFormat('pt-BR',{
+        style:'currency',
+        currency: 'BRL',
+        minimumFractionDigits:2
+    });
+
+    return formatter.format(price);
+}
+
+export function saveOrder(payload:OrderPayLoad){
+   return axios.post(`${API_URL}/orders`, payload) 
 }
